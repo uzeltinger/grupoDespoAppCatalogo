@@ -13,6 +13,7 @@
         android:id="@+id/recycler_category_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         tools:layout_editor_absoluteX="31dp"
         tools:layout_editor_absoluteY="6dp" />
 
