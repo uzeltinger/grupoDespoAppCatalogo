@@ -34,7 +34,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     TextView detailTitle;
     ImageView detailImage;
     TextView detailText;
-
+    String saleId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +43,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         preferencias = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
-
+        saleId = preferencias.getString("saleId","");
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -67,6 +67,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                addNewSaleItem();
                 Snackbar.make(view, "Producto agregado al carrito", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -104,6 +105,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
     }
 
-
+    private void addNewSaleItem() {
+        int _saleId = Integer.parseInt(saleId);
+        int _productId = productDetail.getId();
+        String _productName = productDetail.getName();
+        AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(ProductDetailActivity.this,null,null,0);
+        db.addNewSaleItem(_saleId,_productId,_productName);
+        Toast.makeText(this, "guardado item a la venta n: " + _saleId, Toast.LENGTH_SHORT).show();
+    }
 
 }

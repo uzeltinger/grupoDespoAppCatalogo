@@ -44,7 +44,7 @@ public class ConfigurationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuration);
         SharedPreferences preferencias = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
         urlText = (EditText) findViewById(R.id.urlText);
-        urlText.setText(preferencias.getString("url",""));
+        urlText.setText(preferencias.getString("url","http://grupodespo.com.ar"));
         saveUrl = (Button) findViewById(R.id.saveUrl);
         saveUrl.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +72,7 @@ public class ConfigurationActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+        //goLoadInitialData();
     }
 
     public void savePreferences(View view){
@@ -79,20 +80,30 @@ public class ConfigurationActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = preferencias.edit();
         editor.putString("url", urlText.getText().toString());
         editor.commit();
+        Toast.makeText(this, "Datos guardados.", Toast.LENGTH_SHORT).show();
         //finish();
     }
 
     private void goDownloadProducts() {
+        SharedPreferences preferencias = getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+        String url = preferencias.getString("url","http://grupodespo.com.ar");
+
         if(checkInternetConenction()){
-            GetHttpCategories wsCategories = new GetHttpCategories(ConfigurationActivity.this, categories, adapter, list, arrayList, null);
+            GetHttpCategories wsCategories = new GetHttpCategories(ConfigurationActivity.this, categories, adapter, list, arrayList, null,url);
             wsCategories.execute();
-            GetHttpProducts wsProducts = new GetHttpProducts(ConfigurationActivity.this, items, adapter, list, arrayList, null);
+            GetHttpProducts wsProducts = new GetHttpProducts(ConfigurationActivity.this, items, adapter, list, arrayList, null,url);
             wsProducts.execute();
         }else{
             Log.d("main","NO coneactado");
         }
     }
 
+    private void goLoadInitialData(){
+        AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(ConfigurationActivity.this,null,null,0);
+        db.restartDataBase();
+        db.doLoadInitialData();
+        Toast.makeText(this, "Base de datos agregada 1 venta", Toast.LENGTH_SHORT).show();
+    }
     private void goEmptyProducts(){
         if(checkInternetConenction()){
             AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(ConfigurationActivity.this,null,null,0);

@@ -73,9 +73,18 @@ public class SubcategoriesActivity extends AppCompatActivity {
         subcategoriesAdapter = new subcategoriesAdapter(subcategories);
         categoriesRecyclerView.setAdapter(subcategoriesAdapter);
         getSubCategories(categorySelectedId);
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCart();
+            }
+        });
     }
-
+    private void viewCart() {
+        Intent intent = new Intent(this, SaleActivity.class);
+        this.startActivity(intent);
+    }
     private void getSubCategories(int categorySelectedId) {
         AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(SubcategoriesActivity.this,null,null,0);
         categoriesList = db.getCategories(categorySelectedId);

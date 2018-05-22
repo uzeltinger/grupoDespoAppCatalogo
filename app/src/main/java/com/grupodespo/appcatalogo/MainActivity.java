@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grupodespo.appcatalogo.adapters.categoriesAdapter;
 
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 addSale(view);
             }
         });
+        Log.i("MAIN", "preferencias: "  + preferencias.getString("url",""));
 
     }
     public static MainActivity getContext() {
@@ -129,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
             this.startActivity(intent);
             return true;
         }
+        if (id == R.id.action_sales) {
+            Intent intent = new Intent(this, SalesActivity.class);
+            this.startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
     private void addSale(View view) {
@@ -138,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             Snackbar.make(view, "Debe asignar un cliente", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             showClientDialog(view);
-
         }else{
             Intent intent = new Intent(this, CategoriesActivity.class);
             this.startActivity(intent);
@@ -162,12 +168,30 @@ public class MainActivity extends AppCompatActivity {
         SaveClientName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveClientPreferences(v, textClienteName.getText().toString());
-                buttonCloseClient.setVisibility(View.VISIBLE);
-                ThisDialog.cancel();
+                String name = textClienteName.getText().toString();
+                if(name.length()>0) {
+                    saveClientPreferences(v, textClienteName.getText().toString());
+                    addNewSale(name);
+                    buttonCloseClient.setVisibility(View.VISIBLE);
+                    ThisDialog.cancel();
+                }
             }
         });
         ThisDialog.show();
+    }
+
+    private void addNewSale(String name) {
+        AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(MainActivity.this,null,null,0);
+        long saleId = db.addNewSale(name);
+        saveSaleIdPreferences(saleId);
+        Toast.makeText(this, "Inicializada la venta : " + saleId + " a " + name, Toast.LENGTH_SHORT).show();
+    }
+
+    private void saveSaleIdPreferences(long saleId) {
+        SharedPreferences preferencias = getSharedPreferences("preferencias",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferencias.edit();
+        editor.putString("saleId", String.valueOf(saleId));
+        editor.commit();
     }
 
     private void saveClientPreferences(View view, String name){

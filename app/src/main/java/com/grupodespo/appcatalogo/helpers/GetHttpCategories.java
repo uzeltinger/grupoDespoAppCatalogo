@@ -2,8 +2,10 @@ package com.grupodespo.appcatalogo.helpers;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -23,6 +25,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class GetHttpCategories extends AsyncTask<Void, Void, String> {
 
     private Context httpContext;
@@ -31,14 +35,16 @@ public class GetHttpCategories extends AsyncTask<Void, Void, String> {
     private ListView listView;
     private ArrayList arrayList;
     ProgressDialog progressDialog;
+    String urlGeted;
 
-    public GetHttpCategories(Context httpContext, List<Category> httpList, ArrayAdapter<String> adapter, ListView listView, ArrayList arrayList, ProgressDialog progressDialog) {
+    public GetHttpCategories(Context httpContext, List<Category> httpList, ArrayAdapter<String> adapter, ListView listView, ArrayList arrayList, ProgressDialog progressDialog,String url) {
         this.httpContext = httpContext;
         this.httpList = httpList;
         this.adapter = adapter;
         this.listView = listView;
         this.arrayList = arrayList;
         this.progressDialog = progressDialog;
+        this.urlGeted = url;
     }
 
     @Override
@@ -51,8 +57,9 @@ public class GetHttpCategories extends AsyncTask<Void, Void, String> {
     protected String doInBackground(Void... voids) {
         String result = null;
         try {
-            //String wsURL = "http://grupodespo.local/index.php?option=com_k2&view=categories&task=getJson";
-            String wsURL = "https://www.montehermosoalquila.com.ar/tmp/categorias.json";
+            //String wsURL = "https://www.montehermosoalquila.com.ar/tmp/categorias.json";
+            String wsURL = this.urlGeted + "/index.php?option=com_k2&view=categories&task=getJson";
+            Log.d("wsURL" ,wsURL);
             URL url = new URL(wsURL);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());

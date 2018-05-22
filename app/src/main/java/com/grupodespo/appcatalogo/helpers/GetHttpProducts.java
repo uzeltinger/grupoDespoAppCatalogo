@@ -42,14 +42,16 @@ public class GetHttpProducts extends AsyncTask<Void, Void, String> {
     private ListView listView;
     private ArrayList arrayList;
     ProgressDialog progressDialog;
+    String urlGeted;
 
-    public GetHttpProducts(Context httpContext, List<Product> httpList, ArrayAdapter<String> adapter, ListView listView, ArrayList arrayList, ProgressDialog progressDialog) {
+    public GetHttpProducts(Context httpContext, List<Product> httpList, ArrayAdapter<String> adapter, ListView listView, ArrayList arrayList, ProgressDialog progressDialog,String url) {
         this.httpContext = httpContext;
         this.httpList = httpList;
         this.adapter = adapter;
         this.listView = listView;
         this.arrayList = arrayList;
         this.progressDialog = progressDialog;
+        this.urlGeted = url;
     }
 
     @Override
@@ -63,7 +65,8 @@ public class GetHttpProducts extends AsyncTask<Void, Void, String> {
         String result = null;
         try {
         //String wsURL = "http://grupodespo.com.ar/index.php?option=com_k2&view=products&task=getJson";
-        String wsURL = "https://www.montehermosoalquila.com.ar/tmp/products.json";
+        //String wsURL = "https://www.montehermosoalquila.com.ar/tmp/products.json";
+        String wsURL = this.urlGeted + "/index.php?option=com_k2&view=products&task=getJson";
         URL url = new URL(wsURL);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
         InputStream in = new BufferedInputStream(urlConnection.getInputStream());

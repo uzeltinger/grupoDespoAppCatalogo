@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -68,9 +69,18 @@ public class ProductsListActivity extends AppCompatActivity {
         prodAdapter = new productsAdapter(products);
         productsRecyclerView.setAdapter(prodAdapter);
         getProductsList(subcategorySelectedId);
-
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCart();
+            }
+        });
     }
-
+    private void viewCart() {
+        Intent intent = new Intent(this, SaleActivity.class);
+        this.startActivity(intent);
+    }
     private void getProductsList(int subcategorySelectedId) {
         AdminSQLiteOpenHelper db = new AdminSQLiteOpenHelper(ProductsListActivity.this,null,null,0);
         prodyuctsList = db.getProducts(subcategorySelectedId);

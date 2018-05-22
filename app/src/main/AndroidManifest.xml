@@ -46,6 +46,16 @@
             android:name=".ProductDetailActivity"
             android:label="@string/title_activity_product_detail"
             android:parentActivityName=".ProductsListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SalesActivity"
+            android:label="@string/title_activity_sales"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SaleActivity"
+            android:label="@string/title_activity_sale"
+            android:parentActivityName=".SalesActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

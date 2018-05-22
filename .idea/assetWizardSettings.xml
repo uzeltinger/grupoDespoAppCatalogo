@@ -34,8 +34,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="E:\Android\AndroidStudioProjects\grupodespo\recursos\111111aaac_add_white_24dp.png" />
-                                      <entry key="outputName" value="ic_action_addsale" />
+                                      <entry key="imageAsset" value="E:\Android\AndroidStudioProjects\grupodespo\recursos\shopping_cart_white_18dp.png" />
+                                      <entry key="outputName" value="ic_action_viewcart" />
                                       <entry key="theme" value="HOLO_DARK" />
                                     </map>
                                   </option>
